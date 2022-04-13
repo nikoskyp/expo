@@ -88,9 +88,10 @@ jobs:
         with:
           profile: Nexus 6
           api-level: 30
-          target: playstore
+          target: google_apis
           arch: x86_64
           avd-name: bare-expo
+          ram-size: 2048M
           script: yarn android:detox:test:release
           working-directory: ./apps/bare-expo
       - name: Store images of build failures
