@@ -103,7 +103,13 @@ public final class ModuleHolder {
     }
     do {
       let arguments = try castArguments(args, toTypes: function.argumentTypes)
-      return function.callSync(args: arguments)
+      let result = function.callSync(args: arguments)
+
+      if let result = result as? SharedObject {
+        let jsObject = SharedObjectRegistry.ensureSharedJavaScriptObject(runtime: appContext!.runtime!, nativeObject: result)
+        return jsObject
+      }
+      return result
     } catch {
       return error
     }

@@ -12,6 +12,7 @@
 
 #import <ExpoModulesCore/EXJavaScriptRuntime.h>
 #import <ExpoModulesCore/ExpoModulesHostObject.h>
+#import <ExpoModulesCore/EXObjectDeallocator.h>
 #import <ExpoModulesCore/EXJSIUtils.h>
 #import <ExpoModulesCore/EXJSIConversions.h>
 #import <ExpoModulesCore/Swift.h>
@@ -86,8 +87,10 @@ using namespace facebook;
                           argsCount:(NSInteger)argsCount
                               block:(nonnull JSSyncFunctionBlock)block
 {
-  return [self createHostFunction:name argsCount:argsCount block:^jsi::Value(jsi::Runtime &runtime, std::shared_ptr<react::CallInvoker> callInvoker, NSArray * _Nonnull arguments) {
-    return expo::convertObjCObjectToJSIValue(runtime, block(arguments));
+  return [self createHostFunction:name argsCount:argsCount block:^jsi::Value(jsi::Runtime &runtime, std::shared_ptr<react::CallInvoker> callInvoker, NSArray<EXJavaScriptValue *> * _Nonnull arguments) {
+    @autoreleasepool {
+      return expo::convertObjCObjectToJSIValue(runtime, block(arguments));
+    }
   }];
 }
 
@@ -95,7 +98,7 @@ using namespace facebook;
                            argsCount:(NSInteger)argsCount
                                block:(nonnull JSAsyncFunctionBlock)block
 {
-  return [self createHostFunction:name argsCount:argsCount block:^jsi::Value(jsi::Runtime &runtime, std::shared_ptr<react::CallInvoker> callInvoker, NSArray *arguments) {
+  return [self createHostFunction:name argsCount:argsCount block:^jsi::Value(jsi::Runtime &runtime, std::shared_ptr<react::CallInvoker> callInvoker, NSArray<EXJavaScriptValue *> * _Nonnull arguments) {
     if (!callInvoker) {
       // In mocked environment the call invoker may be null so it's not supported to call async functions.
       // Testing async functions is a bit more complicated anyway. See `init` description for more.
@@ -109,6 +112,15 @@ using namespace facebook;
     };
     return createPromiseAsJSIValue(runtime, promiseSetup);
   }];
+}
+
+- (nonnull EXJavaScriptObject *)createSharedObjectRefWithId:(NSInteger)sharedObjectId
+{
+  auto hostObjectPtr = std::make_shared<expo::ObjectDeallocator>(^{
+    // TODO: deallocate native shared object
+  });
+  auto jsObjectPtr = std::make_shared<jsi::Object>(jsi::Object::createFromHostObject(*_runtime, hostObjectPtr));
+  return [[EXJavaScriptObject alloc] initWith:jsObjectPtr runtime:self];
 }
 
 #pragma mark - Script evaluation

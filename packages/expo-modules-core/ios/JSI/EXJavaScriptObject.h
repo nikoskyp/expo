@@ -15,11 +15,16 @@ typedef id _Nullable (^JSSyncFunctionBlock)(NSArray * _Nonnull);
 
 @class EXJavaScriptRuntime;
 @class EXJavaScriptValue;
+@class EXJavaScriptWeakObject;
 
 /**
  The property descriptor options for the property being defined or modified.
  */
 typedef NS_OPTIONS(NSInteger, EXJavaScriptObjectPropertyDescriptor) {
+  /**
+   The default property descriptor — non-configurable, non-enumerable and read-only.
+   */
+  EXJavaScriptObjectPropertyDescriptorDefault = 0,
   /**
    If set, the type of this property descriptor may be changed and if the property may be deleted from the corresponding object.
    */
@@ -78,6 +83,10 @@ NS_SWIFT_NAME(JavaScriptObject)
  */
 - (void)defineProperty:(nonnull NSString *)name value:(nullable id)value options:(EXJavaScriptObjectPropertyDescriptor)options;
 
+#pragma mark - WeakObject
+
+- (nonnull EXJavaScriptWeakObject *)createWeak;
+
 #pragma mark - Functions
 
 /**
@@ -93,5 +102,9 @@ NS_SWIFT_NAME(JavaScriptObject)
 - (void)setSyncFunction:(nonnull NSString *)name
               argsCount:(NSInteger)argsCount
                   block:(nonnull JSSyncFunctionBlock)block;
+
+#pragma mark - Deallocator
+
+- (void)setDeallocator:(void (^)())deallocatorBlock;
 
 @end

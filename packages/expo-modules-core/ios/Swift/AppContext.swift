@@ -142,6 +142,7 @@ public final class AppContext {
     }
     EXJavaScriptRuntimeManager.installExpoModules(to: runtime, withSwiftInterop: interopBridge)
   }
+
   /**
    Unsets runtime objects that we hold for each module.
    */

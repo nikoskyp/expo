@@ -26,6 +26,7 @@ NS_SWIFT_NAME(JavaScriptRuntime)
 - (nonnull instancetype)init;
 
 #ifdef __cplusplus
+
 - (nonnull instancetype)initWithRuntime:(nonnull jsi::Runtime *)runtime
                             callInvoker:(std::shared_ptr<react::CallInvoker>)callInvoker;
 
@@ -51,6 +52,7 @@ NS_SWIFT_NAME(JavaScriptRuntime)
 - (jsi::Function)createAsyncFunction:(nonnull NSString *)name
                            argsCount:(NSInteger)argsCount
                                block:(nonnull JSAsyncFunctionBlock)block;
+
 #endif // __cplusplus
 
 /**
@@ -62,6 +64,11 @@ NS_SWIFT_NAME(JavaScriptRuntime)
  Creates a new object for use in Swift.
  */
 - (nonnull EXJavaScriptObject *)createObject;
+
+/**
+ Creates a new shared object with given id.
+ */
+- (nonnull EXJavaScriptObject *)createSharedObjectRefWithId:(NSInteger)sharedObjectId;
 
 #pragma mark - Script evaluation
 

@@ -4,6 +4,7 @@ import ExpoModulesTestCore
 
 @testable import ExpoModulesCore
 
+@available(iOS 13.0, *)
 class ExpoModulesSpec: ExpoSpec {
   override func spec() {
     let appContext = AppContext.create()
@@ -26,6 +27,50 @@ class ExpoModulesSpec: ExpoSpec {
 
         Function(testFunctionName) { Double.pi }
       })
+    }
+
+    fdescribe("shared object") {
+      class MySharedObject: SharedObject {
+        let value: Int
+
+        init(_ value: Int) {
+          self.value = value
+          super.init()
+        }
+      }
+
+      it("passes") {
+        let randomInt = Int.random(in: 0..<100)
+
+        appContext.moduleRegistry.register(holder: mockModuleHolder(appContext) {
+          Name("SharedObjectTest")
+
+          Function("createSharedObject") {
+            return MySharedObject(randomInt)
+          }
+
+          Function("getValueFromSharedObject") { (sharedObject: MySharedObject) in
+            return sharedObject.value
+          }
+        })
+
+        try? runtime?.eval("""
+for (let i = 0; i < 500000; i++) {
+  let result = ExpoModules.SharedObjectTest.createSharedObject();
+  result = null;
+}
+""")
+
+//        expect(result?.isNumber()) == true
+//        expect(try? result?.asInt()) == randomInt
+
+        waitUntil(timeout: DispatchTimeInterval.seconds(60)) { done in
+          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now().advanced(by: .seconds(50))) {
+            done()
+            print(SharedObjectRegistry.pairs)
+          }
+        }
+      }
     }
 
     describe("host object") {

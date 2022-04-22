@@ -5,14 +5,16 @@
 #import <jsi/jsi.h>
 #import <ReactCommon/RCTTurboModule.h>
 
-using namespace facebook;
-using namespace react;
+namespace jsi = facebook::jsi;
+namespace react = facebook::react;
 
 namespace expo {
 
+std::shared_ptr<jsi::Object> createWeakObject(jsi::Runtime &runtime, std::shared_ptr<jsi::Object> object);
+
 using PromiseInvocationBlock = void (^)(RCTPromiseResolveBlock resolveWrapper, RCTPromiseRejectBlock rejectWrapper);
 
-void callPromiseSetupWithBlock(jsi::Runtime &runtime, std::shared_ptr<CallInvoker> jsInvoker, std::shared_ptr<Promise> promise, PromiseInvocationBlock setupBlock);
+void callPromiseSetupWithBlock(jsi::Runtime &runtime, std::shared_ptr<react::CallInvoker> jsInvoker, std::shared_ptr<react::Promise> promise, PromiseInvocationBlock setupBlock);
 
 } // namespace expo
 
