@@ -3,7 +3,7 @@ import Foundation
 /**
  A protocol for errors specyfing its `code` and providing the `description`.
  */
-public protocol CodedError: Error {
+public protocol CodedError: Swift.Error {
   var code: String { get }
   var description: String { get }
 }

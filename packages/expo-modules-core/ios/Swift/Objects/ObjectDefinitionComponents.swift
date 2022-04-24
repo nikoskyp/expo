@@ -43,7 +43,7 @@ public func function<R>(
   _ name: String,
   _ closure: @escaping () throws -> R
 ) -> AnyFunction {
-  return ConcreteFunction(
+  return AsyncFunctionComponent(
     name,
     argTypes: [],
     closure
@@ -58,7 +58,7 @@ public func function<R, A0: AnyArgument>(
   _ name: String,
   _ closure: @escaping (A0) throws -> R
 ) -> AnyFunction {
-  return ConcreteFunction(
+  return AsyncFunctionComponent(
     name,
     argTypes: [ArgumentType(A0.self)],
     closure
@@ -73,7 +73,7 @@ public func function<R, A0: AnyArgument, A1: AnyArgument>(
   _ name: String,
   _ closure: @escaping (A0, A1) throws -> R
 ) -> AnyFunction {
-  return ConcreteFunction(
+  return AsyncFunctionComponent(
     name,
     argTypes: [ArgumentType(A0.self), ArgumentType(A1.self)],
     closure
@@ -88,7 +88,7 @@ public func function<R, A0: AnyArgument, A1: AnyArgument, A2: AnyArgument>(
   _ name: String,
   _ closure: @escaping (A0, A1, A2) throws -> R
 ) -> AnyFunction {
-  return ConcreteFunction(
+  return AsyncFunctionComponent(
     name,
     argTypes: [
       ArgumentType(A0.self),
@@ -107,7 +107,7 @@ public func function<R, A0: AnyArgument, A1: AnyArgument, A2: AnyArgument, A3: A
   _ name: String,
   _ closure: @escaping (A0, A1, A2, A3) throws -> R
 ) -> AnyFunction {
-  return ConcreteFunction(
+  return AsyncFunctionComponent(
     name,
     argTypes: [
       ArgumentType(A0.self),
@@ -127,7 +127,7 @@ public func function<R, A0: AnyArgument, A1: AnyArgument, A2: AnyArgument, A3: A
   _ name: String,
   _ closure: @escaping (A0, A1, A2, A3, A4) throws -> R
 ) -> AnyFunction {
-  return ConcreteFunction(
+  return AsyncFunctionComponent(
     name,
     argTypes: [
       ArgumentType(A0.self),
@@ -148,7 +148,7 @@ public func function<R, A0: AnyArgument, A1: AnyArgument, A2: AnyArgument, A3: A
   _ name: String,
   _ closure: @escaping (A0, A1, A2, A3, A4, A5) throws -> R
 ) -> AnyFunction {
-  return ConcreteFunction(
+  return AsyncFunctionComponent(
     name,
     argTypes: [
       ArgumentType(A0.self),
@@ -170,7 +170,7 @@ public func function<R, A0: AnyArgument, A1: AnyArgument, A2: AnyArgument, A3: A
   _ name: String,
   _ closure: @escaping (A0, A1, A2, A3, A4, A5, A6) throws -> R
 ) -> AnyFunction {
-  return ConcreteFunction(
+  return AsyncFunctionComponent(
     name,
     argTypes: [
       ArgumentType(A0.self),
@@ -193,7 +193,7 @@ public func function<R, A0: AnyArgument, A1: AnyArgument, A2: AnyArgument, A3: A
   _ name: String,
   _ closure: @escaping (A0, A1, A2, A3, A4, A5, A6, A7) throws -> R
 ) -> AnyFunction {
-  return ConcreteFunction(
+  return AsyncFunctionComponent(
     name,
     argTypes: [
       ArgumentType(A0.self),
@@ -231,14 +231,14 @@ public func Events(_ names: String...) -> AnyDefinition {
  */
 @available(*, deprecated, renamed: "OnStartObserving")
 public func onStartObserving(_ body: @escaping () -> Void) -> AnyFunction {
-  return ConcreteFunction("startObserving", argTypes: [], body)
+  return AsyncFunctionComponent("startObserving", argTypes: [], body)
 }
 
 /**
  Function that is invoked when the first event listener is added.
  */
 public func OnStartObserving(_ body: @escaping () -> Void) -> AnyFunction {
-  return ConcreteFunction("startObserving", argTypes: [], body)
+  return AsyncFunctionComponent("startObserving", argTypes: [], body)
 }
 
 /**
@@ -246,12 +246,12 @@ public func OnStartObserving(_ body: @escaping () -> Void) -> AnyFunction {
  */
 @available(*, deprecated, renamed: "OnStopObserving")
 public func onStopObserving(_ body: @escaping () -> Void) -> AnyFunction {
-  return ConcreteFunction("stopObserving", argTypes: [], body)
+  return AsyncFunctionComponent("stopObserving", argTypes: [], body)
 }
 
 /**
  Function that is invoked when all event listeners are removed.
  */
 public func OnStopObserving(_ body: @escaping () -> Void) -> AnyFunction {
-  return ConcreteFunction("stopObserving", argTypes: [], body)
+  return AsyncFunctionComponent("stopObserving", argTypes: [], body)
 }
